@@ -1,0 +1,26 @@
+{
+  "name": "SNIPERKING.SITE.$",
+  "short_name": "SniperKing",
+  "description": "Advanced Deriv Market Intelligence - 0-80ms LIVE",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "categories": ["finance", "trading"],
+  "icons": [
+    {
+      "src": "/sniperking/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/sniperking/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

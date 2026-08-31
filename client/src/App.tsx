@@ -1,4 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState } from 'react';
+import SplashScreen from './components/SplashScreen';
+import LoginPage from './components/LoginPage';
 import { useDeriv, MARKET_LABELS } from './hooks/useDeriv';
 import { calculateDigitStats, analyzeMatches, analyzeEvenOdd, analyzeRiseFall, analyzeOnlyUps, analyzeOnlyDowns } from './utils/analysis';
 
@@ -14,6 +16,8 @@ const STRATEGIES = [
 const WINDOW_SIZES = [25, 50, 100, 200, 500, 1000, 1250, 1500];
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedMarket, setSelectedMarket] = useState('R_100_1s');
   const [selectedStrategy, setSelectedStrategy] = useState('MATCHES');
   const [windowSize, setWindowSize] = useState(100);
@@ -23,13 +27,20 @@ export default function App() {
   
   const { status, markets, ticks, latency, uptime, reconnect } = useDeriv(selectedMarket);
 
-  // Filter by market
-  const marketTicks = useMemo(() => {
-    return ticks;
-  }, [ticks]);
+  // Show splash screen on initial load
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
 
-  // Calculate analysis
-  const analysis = useMemo(() => {
+  // Show login page if not authenticated
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
+
+  // Main app (existing code)
+  const marketTicks = ticks;
+
+  const analysis = React.useMemo(() => {
     if (marketTicks.length < windowSize) return null;
 
     let result = null;
@@ -56,8 +67,7 @@ export default function App() {
     return result;
   }, [marketTicks, selectedStrategy, windowSize]);
 
-  // Countdown timer
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isAnalyzing) return;
     
     const duration = selectedStrategy === 'MATCHES' ? 10 : 15;
@@ -65,10 +75,7 @@ export default function App() {
     
     const timer = setInterval(() => {
       setCountdownTime(prev => {
-        if (prev <= 1) {
-          // Generate new signal
-          return duration;
-        }
+        if (prev <= 1) return duration;
         return prev - 1;
       });
     }, 1000);
@@ -76,8 +83,7 @@ export default function App() {
     return () => clearInterval(timer);
   }, [isAnalyzing, selectedStrategy]);
 
-  // Generate signal when analyzing
-  useEffect(() => {
+  React.useEffect(() => {
     if (isAnalyzing && analysis && analysis.score >= 60) {
       setCurrentSignal({
         market: MARKET_LABELS[selectedMarket]?.name || selectedMarket,
@@ -89,7 +95,7 @@ export default function App() {
     }
   }, [analysis, isAnalyzing, selectedMarket, selectedStrategy]);
 
-  const digitStats = useMemo(() => {
+  const digitStats = React.useMemo(() => {
     if (marketTicks.length < windowSize) return [];
     return calculateDigitStats(marketTicks, windowSize);
   }, [marketTicks, windowSize]);
