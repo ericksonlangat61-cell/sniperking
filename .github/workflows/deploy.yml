@@ -1,4 +1,3 @@
-
 name: Deploy SniperKing
 on:
   push:
@@ -16,7 +15,7 @@ jobs:
         with:
           node-version: 20
       - run: cd client && npm install
-      - run: cd client && npx vite build
+      - run: cd client && npm run build
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
