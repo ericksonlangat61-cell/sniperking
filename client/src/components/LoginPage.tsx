@@ -147,14 +147,14 @@ export default function LoginPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Username/Email */}
+            {/* Username */}
             <div>
-              <label className="block text-xs text-gray-400 mb-2 uppercase tracking-wider">Username or Email</label>
+              <label className="block text-xs text-gray-400 mb-2 uppercase tracking-wider">Username</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username or email"
+                placeholder="Enter your username"
                 className="w-full px-4 py-3 rounded-lg border"
                 style={{
                   backgroundColor: '#0e0e0e',
@@ -177,7 +177,7 @@ export default function LoginPage() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Minimum 12 characters"
+                  placeholder="Enter your password"
                   className="w-full px-4 py-3 rounded-lg border pr-10"
                   style={{
                     backgroundColor: '#0e0e0e',
@@ -231,7 +231,7 @@ export default function LoginPage() {
                 transition: 'all 0.2s'
               }}
             >
-              {loading ? '🔄 Connecting...' : '→ Sign In to SNIPERKING'}
+              {loading ? '🔄 Connecting...' : 'LOGIN'}
             </button>
           </form>
 
