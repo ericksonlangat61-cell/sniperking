@@ -1,11 +1,19 @@
-name: Deploy SniperKing
+name: Deploy to GitHub Pages
+
 on:
   push:
-    branches: [ main ]
+    branches: ["main"]
+  workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,8 +22,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: cd client && npm install
-      - run: cd client && npm run build
+      - name: Install and Build
+        working-directory: ./client
+        run: |
+          npm install
+          npm run build
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
