@@ -7,13 +7,13 @@
 DERIV_APP_ID=1089
 
 # Admin (NO HARDCODED PASSWORDS)
-ADMIN_USERNAME=manu
-# Password set via environment only
+ADMIN_USER=manu
+ADMIN_PASS=your_secure_password_here
 
 # Server
 PORT=5000
 NODE_ENV=production
-JWT_SECRET=your_secret_key
+JWT_SECRET=your_secret_key_min_32_chars
 
 # Database
 MONGODB_URI=mongodb://localhost:27017/sniperking
@@ -23,10 +23,10 @@ MONGODB_URI=mongodb://localhost:27017/sniperking
 
 - **Endpoint:** `wss://ws.derivws.com/websockets/v3?app_id=1089`
 - **No Token Required:** Direct connection using App ID only
-- **Ping Interval:** Every 1 second for latency measurement
-- **Markets Subscribed:** 20 synthetic indices (R_10_1s through RDBULL)
+- **Ping Interval:** Every 20 seconds for connection health
+- **Markets Subscribed:** 20 synthetic indices
 - **Tick History:** Last 1500 ticks per market
-- **Latency Target:** 10-80ms
+- **Latency Target:** 0-80ms
 
 ## Market List (20 Total)
 
@@ -44,8 +44,8 @@ MONGODB_URI=mongodb://localhost:27017/sniperking
 
 ## Admin Authentication
 
-**Username:** `manu`
-**Password:** Managed via environment variables only - NEVER hardcoded
+**Username:** `manu` (from ADMIN_USER env var)
+**Password:** Managed via ADMIN_PASS environment variable - NEVER hardcoded
 
 No tokens used in this system - WebSocket App ID 1089 provides access.
 
@@ -87,10 +87,10 @@ npm start
 
 ## Security Notes
 
-✓ No hardcoded passwords
+✓ No hardcoded passwords in code
 ✓ No API tokens in frontend
 ✓ WebSocket uses App ID only (1089)
-✓ Admin credentials via environment
+✓ Admin credentials via environment variables only
 ✓ Password hashing with bcryptjs
 ✓ JWT for session management
 ✓ Rate limiting on API endpoints

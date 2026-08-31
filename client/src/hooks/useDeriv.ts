@@ -56,7 +56,7 @@ export function useDeriv(selectedSymbol: string) {
         // Request active symbols
         ws.send(JSON.stringify({ active_symbols: 'brief', product_type: 'basic' }));
         
-        // Ping every 1s
+        // Ping every 20s for connection health (Latency Target: 0-80ms)
         if (pingIntervalRef.current) clearInterval(pingIntervalRef.current);
         pingIntervalRef.current = setInterval(() => {
           if (ws.readyState === WebSocket.OPEN) {
@@ -67,7 +67,7 @@ export function useDeriv(selectedSymbol: string) {
               setLatency(latencyVal);
             }, 50);
           }
-        }, 1000);
+        }, 20000);
       };
 
       ws.onmessage = (event) => {

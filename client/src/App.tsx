@@ -287,7 +287,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="border-t border-gray-800 p-4 text-center text-gray-500 text-xs font-mono">
-        © 2026 SNIPERKING.SITE.$ • Advanced Deriv Market Intelligence • 10-80ms LIVE
+        © 2026 SNIPERKING.SITE.$ • Advanced Deriv Market Intelligence • 0-80ms LIVE
       </footer>
     </div>
   );
