@@ -1,34 +1,63 @@
+cd /path/to/sniperking
+
+# Create the GitHub Actions workflow
+mkdir -p .github/workflows
+
+# Create deploy.yml with this content:
+cat > .github/workflows/deploy.yml << 'EOF'
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - name: Install and Build
-        working-directory: ./client
-        run: |
-          npm install
-          npm run build
-      - uses: actions/configure-pages@v4
-      - uses: actions/upload-pages-artifact@v3
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'client/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: client
+        run: npm install
+
+      - name: Build application
+        working-directory: client
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: ./client/dist
-      - uses: actions/deploy-pages@v4
+          path: 'client/dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+EOF
+
+# Verify build works
+cd client
+npm run build
+
+# Push to main
+cd ..
+git add -A
+git commit -m "feat: final splash + login with 80 falling dollars, crown, SNIPERKING.APP + github pages auto-deploy"
+git push origin main
